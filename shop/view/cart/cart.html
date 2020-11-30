@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Bootstrap 实例 - 条纹表格</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js">
+    </script>
+</head>
+<body>
+
+<table class="table table-striped">
+    <caption>条纹表格布局</caption>
+    <thead>
+    <tr>
+        <th>编号</th>
+        <th>商品名字</th>
+        <th>商品图片</th>
+        <th>商品数量</th>
+        <th>商品价格</th>
+        <th>是否购买</th>
+    </tr>
+    </thead>
+    <tbody>
+    {foreach $data as $val}
+    <tr>
+
+        <td>{$val.id}</td>
+        <td>{$val.goods_name}</td>
+        <td><a href="{$val.img}"></a></td>
+        <td>
+            <a href="javascript:void(0)" class="increment mins">-</a>
+            <input autocomplete="off" type="text" value="{$val.number}" minnum="1" class="itxt current_number" number_price="{$val.number}" />
+
+            <a href="javascript:void(0)" class="increment plus">+</a>
+        </td>
+        <td><span class="price">{$val.price}</span></td>
+        <td><a href="http://www.shop.com/shop/dingdan/index?id={$val.goods_id}" class="jg">提交订单</a></td>
+    </tr>
+    {/foreach}
+    </tbody>
+</table>
+
+</body>
+</html>
+<script>
+
+        $(".plus").click(function () {
+            //获取当前的数量
+            var number=parseInt($(this).prev(".current_number").val())+1;
+            $(this).prev(".current_number").attr("number_price",number)
+            $(this).prev(".current_number").val(number)
+            $.ajax({
+                type: "POST",
+                url: "http://www.shop.com/shop/cart/update",
+                data: "number:number",
+                success: function(e){
+                    console.log(e)
+                }
+            });
+        })
+        $(".mins").click(function () {
+            //获取当前的数量
+            var number=parseInt($(this).prev(".current_number").val())-1;
+            $(this).prev(".current_number").val(number)
+            $.ajax({
+                type: "POST",
+                url: "http://www.shop.com/shop/cart/update",
+                data: "number:number",
+                success: function(e){
+                    console.log(e)
+                }
+            });
+        })
+
+
+
+</script>
